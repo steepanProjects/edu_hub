@@ -1,0 +1,110 @@
+/* ToggleSwitch - modern glassmorphism toggle */
+
+:root {
+  --ts-duration: 220ms;
+  --ts-ring: 0 0 0 6px rgba(59, 130, 246, 0.15);
+}
+
+.ts-toggle {
+  --ts-width: 52px;
+  --ts-height: 30px;
+  --ts-radius: 999px;
+  --ts-thumb: 22px;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* sizes */
+.ts-toggle.sm { --ts-width: 42px; --ts-height: 24px; --ts-thumb: 18px; }
+.ts-toggle.md { --ts-width: 52px; --ts-height: 30px; --ts-thumb: 22px; }
+.ts-toggle.lg { --ts-width: 64px; --ts-height: 36px; --ts-thumb: 28px; }
+
+.ts-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.ts-track {
+  width: var(--ts-width);
+  height: var(--ts-height);
+  border-radius: var(--ts-radius);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.08));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    0 8px 24px rgba(0,0,0,0.15);
+  position: relative;
+  transition: background var(--ts-duration) ease, box-shadow var(--ts-duration) ease;
+}
+
+.ts-thumb {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translate(0, -50%);
+  width: var(--ts-thumb);
+  height: var(--ts-thumb);
+  border-radius: 50%;
+  background: radial-gradient( circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.6) ),
+              linear-gradient(180deg, rgba(255,255,255,0.9), rgba(240,240,240,0.9));
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.8);
+  transition: left var(--ts-duration) ease, width var(--ts-duration) ease;
+}
+
+/* glow states */
+.ts-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--ts-radius);
+  background: linear-gradient(135deg, rgba(59,130,246,0.35), rgba(16,185,129,0.35));
+  opacity: 0;
+  transition: opacity var(--ts-duration) ease;
+}
+
+/* icons */
+.ts-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  line-height: 1;
+  color: rgba(0,0,0,0.5);
+  transition: opacity var(--ts-duration) ease;
+}
+.ts-icon.off { left: 10px; }
+.ts-icon.on { right: 10px; opacity: 0; }
+
+/* checked state */
+.ts-toggle input:checked ~ .ts-track .ts-thumb {
+  left: calc(var(--ts-width) - var(--ts-thumb) - 4px);
+}
+.ts-toggle input:checked ~ .ts-track::after { opacity: 1; }
+.ts-toggle input:checked ~ .ts-track .ts-icon.off { opacity: 0; }
+.ts-toggle input:checked ~ .ts-track .ts-icon.on { opacity: 0.9; }
+
+/* focus ring */
+.ts-toggle input:focus-visible ~ .ts-track {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 24px rgba(0,0,0,0.15), var(--ts-ring);
+}
+
+/* disabled */
+.ts-toggle.disabled { opacity: 0.6; pointer-events: none; }
+
+/* labels */
+.ts-label {
+  user-select: none;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+/* reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .ts-track, .ts-thumb, .ts-icon { transition: none; }
+}

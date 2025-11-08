@@ -1,0 +1,3 @@
+# This file is used by the build system to only include the favicon.ico file in the
+# build output's public folder. This file can safely be deleted after the build
+# process.
